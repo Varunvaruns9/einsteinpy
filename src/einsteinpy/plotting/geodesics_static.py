@@ -4,6 +4,7 @@ import astropy.units as u
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.animation import FuncAnimation
 
 from einsteinpy.metric import Schwarzschild
 from einsteinpy.utils import schwarzschild_radius
@@ -43,6 +44,42 @@ class ScatterGeodesicPlotter:
 
         if not self._attractor_present:
             self._plot_attractor()
+
+    def plot_animated(self, pos_vec, vel_vec, end_lambda=10, step_size=1e-3):
+        swc = Schwarzschild.from_spherical(pos_vec, vel_vec, self.time, self.mass)
+
+        vals = swc.calculate_trajectory(
+            end_lambda=end_lambda, OdeMethodKwargs={"stepsize": step_size}
+        )[1]
+
+        time = vals[:, 0]
+        r = vals[:, 1]
+        # Currently not being used (might be useful in future)
+        # theta = vals[:, 2]
+        phi = vals[:, 3]
+
+        pos_x = r * np.cos(phi)
+        pos_y = r * np.sin(phi)
+        frames = pos_x.shape[0]
+        x_max, x_min = max(pos_x), min(pos_x)
+        y_max, y_min = max(pos_y), min(pos_y)
+        margin_x = (x_max - x_min) * 0.1
+        margin_y = (y_max - y_min) * 0.1
+
+        fig = plt.figure()
+
+        plt.xlim(x_min - margin_x, x_max + margin_x)
+        plt.ylim(y_min - margin_y, y_max + margin_y)
+        pic = plt.scatter([], [], s=1)
+        plt.scatter(0, 0, color="black")
+
+        def _update(frame):
+            pic.set_offsets(np.vstack((pos_x[: frame + 1], pos_y[: frame + 1])).T)
+            pic.set_array(time[: frame + 1])
+            return (pic,)
+
+        ani = FuncAnimation(fig, _update, frames=frames, interval=1)
+        plt.show()
 
     def show(self):
         plt.show()
