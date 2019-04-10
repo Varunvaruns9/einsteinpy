@@ -45,7 +45,18 @@ class ScatterGeodesicPlotter:
         if not self._attractor_present:
             self._plot_attractor()
 
-    def plot_animated(self, pos_vec, vel_vec, end_lambda=10, step_size=1e-3, interval=50):
+    def plot_animated(
+        self, pos_vec, vel_vec, end_lambda=10, step_size=1e-3, interval=50
+    ):
+        """
+
+        Parameters
+        ----------
+        Interval: Control the time between frames. Add time in milliseconds.
+
+        Other parameters are same as plot method.
+
+        """
         swc = Schwarzschild.from_spherical(pos_vec, vel_vec, self.time, self.mass)
 
         vals = swc.calculate_trajectory(
