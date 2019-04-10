@@ -45,7 +45,7 @@ class ScatterGeodesicPlotter:
         if not self._attractor_present:
             self._plot_attractor()
 
-    def plot_animated(self, pos_vec, vel_vec, end_lambda=10, step_size=1e-3):
+    def plot_animated(self, pos_vec, vel_vec, end_lambda=10, step_size=1e-3, interval=50):
         swc = Schwarzschild.from_spherical(pos_vec, vel_vec, self.time, self.mass)
 
         vals = swc.calculate_trajectory(
@@ -78,7 +78,7 @@ class ScatterGeodesicPlotter:
             pic.set_array(time[: frame + 1])
             return (pic,)
 
-        ani = FuncAnimation(fig, _update, frames=frames, interval=1)
+        ani = FuncAnimation(fig, _update, frames=frames, interval=interval)
         plt.show()
 
     def show(self):
