@@ -21,6 +21,21 @@ class ScatterGeodesicPlotter:
         plt.scatter(0, 0, color="black")
 
     def plot(self, pos_vec, vel_vec, end_lambda=10, step_size=1e-3):
+        """
+
+        Parameters
+        ----------
+        pos_vec : list
+            list of r, theta & phi components along with ~astropy.units.
+        vel_vec : list
+            list of velocities of r, theta & phi components along with ~astropy.units.
+        end_lambda : float, optional
+            Lambda where iteartions will stop.
+        step_size : float, optional
+            Step size for the ODE.
+
+        """
+
         swc = Schwarzschild.from_spherical(pos_vec, vel_vec, self.time, self.mass)
 
         vals = swc.calculate_trajectory(
@@ -48,11 +63,19 @@ class ScatterGeodesicPlotter:
 
         Parameters
         ----------
-        Interval: Control the time between frames. Add time in milliseconds.
-
-        Other parameters are same as plot method.
+        pos_vec : list
+            list of r, theta & phi components along with ~astropy.units.
+        vel_vec : list
+            list of velocities of r, theta & phi components along with ~astropy.units.
+        end_lambda : float, optional
+            Lambda where iteartions will stop.
+        step_size : float, optional
+            Step size for the ODE.
+        interval : int, optional
+            Control the time between frames. Add time in milliseconds.
 
         """
+
         swc = Schwarzschild.from_spherical(pos_vec, vel_vec, self.time, self.mass)
 
         vals = swc.calculate_trajectory(
