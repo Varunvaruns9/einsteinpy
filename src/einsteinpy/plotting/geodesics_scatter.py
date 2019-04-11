@@ -56,9 +56,7 @@ class ScatterGeodesicPlotter:
         if not self._attractor_present:
             self._plot_attractor()
 
-    def plot_animated(
-        self, pos_vec, vel_vec, end_lambda=10, step_size=1e-3, interval=50
-    ):
+    def animate(self, pos_vec, vel_vec, end_lambda=10, step_size=1e-3, interval=50):
         """
 
         Parameters

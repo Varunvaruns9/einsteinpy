@@ -49,7 +49,7 @@ def test_plot_calls_plot_show(mock_animated_plt_show):
     el = 0.002
     ss = 0.5e-6
     cl = ScatterGeodesicPlotter(m)
-    cl.plot_animated(r, v, el, ss)
+    cl.animate(r, v, el, ss)
     mock_animated_plt_show.assert_called_with()
 
 
